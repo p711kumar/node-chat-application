@@ -7,4 +7,13 @@ var generateMessage = function (from, text) {
     };
 };
 
-module.exports = generateMessage;
+var generateLocationMessage = function (from, lat,lng) {
+
+    return {
+        from,
+        'locationURL':'https://www.google.com/maps/?q='+lat+','+lng,
+        'createdAt': new Date().getTime()
+    };
+};
+
+module.exports = {generateMessage,generateLocationMessage};
