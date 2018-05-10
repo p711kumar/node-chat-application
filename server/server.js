@@ -19,9 +19,12 @@ io.on('connection', (socket) => {
     socket.emit('newMessage', generateMessage('admin', 'welcome to the chat app'));
     socket.broadcast.emit('newMessage', generateMessage('admin', 'new user joined'));
     //get new message from client
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log("create message", message);
         io.emit('newMessage', generateMessage(message.from, message.text));
+        if (callback != undefined) {
+            callback("everything is ok");
+        }
     });
 
 
