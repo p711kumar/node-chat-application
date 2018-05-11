@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         console.log("create message", message);
         io.emit('newMessage', generateMessage(message.from, message.text));
         if (callback != undefined) {
-            callback("everything is ok");
+            callback();
         }
     });
     //get new message from client
