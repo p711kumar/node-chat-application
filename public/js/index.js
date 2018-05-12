@@ -11,24 +11,26 @@ socket.on('disconnect', function () {
 //get new message from server
 socket.on('newMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    console.log("message received from server");
-    console.log(message);
-    var li = jQuery('<li></li');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    jQuery('#messages').append(li);
+    var template = jQuery('#message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
 });
 
-//get new message from server
+//get new location message from server
 socket.on('newLocationMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    console.log("Location message received from server");
-    console.log(message);
-    var li = jQuery('<li></li');
-    li.text(`${message.from} ${formattedTime}:`);
-    var a = jQuery('<a target="_blank">My Current Location</a>');
-    a.attr('href', message.locationURL);
-    li.append(a);
-    jQuery('#messages').append(li);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#location-message-template').html();
+    var html = Mustache.render(template, {
+        locationURL: message.locationURL,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
 });
 
 //handle form submit event
@@ -59,7 +61,7 @@ locationButoon.on('click', function (e) {
             'lattitude': position.coords.latitude,
             'longitude': position.coords.longitude
         });
-            }, function (err) {
+    }, function (err) {
         alert('Unable to fetch location!');
         locationButoon.removeAttr('disabled').text('Send-Location');
     });
